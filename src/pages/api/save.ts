@@ -1,8 +1,6 @@
 
 import { google } from 'googleapis';
 
-import key from '../../../apikey.json'
-
 import { NextApiRequest, NextApiResponse } from 'next';
 
 const save = async ( req:NextApiRequest, res:NextApiResponse ) => {
