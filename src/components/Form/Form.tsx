@@ -4,12 +4,15 @@
 import { useState } from "react";
 
 import FormCWrapper, { InputWrapper, SubmitButton } from "./Form.style";
+import Alert from "../Alert/Alert";
 
 
 const Form = () => {
 
     const [name, setName] = useState<string>('');
     const [email, setEmail] = useState<string>('');
+    const [showAlert, setShowAlert] = useState<string>('');
+    const [error, setError] = useState<boolean>(false)
 
     const handleInputChange = (event:React.ChangeEvent<HTMLInputElement>) => {
 
@@ -23,35 +26,52 @@ const Form = () => {
 
         event.preventDefault();
 
-        try {
+        if( [name, email].includes('') ) {
+            setError(true)
+            setShowAlert('Hay que rellenar todos los campos')
+        } 
 
-            const response = await fetch('/api/save', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    name: name,
-                    email: email
-                })
-            });
+        else {
 
-            if (response.status === 200) {
-                setEmail('')
-                setName('')
-                alert('Guardado correctamente')
+            try {
+
+                const response = await fetch('/api/save', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        name: name,
+                        email: email
+                    })
+                });
+    
+                if (response.status === 200) {
+                    setEmail('')
+                    setName('')
+                    setError(false)
+                    setShowAlert('Guardado correctamente')
+                }
+    
+                else if (response.status === 500) {
+                    setError(true)
+                    setShowAlert('Error 500')
+                }
+    
+                else {
+                    setError(true)
+                    setShowAlert ('Error desconocido')    
+                } 
+    
+            } catch (error) {
+                console.log(error)
             }
 
-            else if (response.status === 500) {
-                alert('Error 500')
-            }
-
-            else alert ('Error desconocido')
-
-
-        } catch (error) {
-            console.log(error)
         }
+
+        setTimeout(() => {
+            setShowAlert('')
+        }, 3000)
 
     }
 
@@ -84,6 +104,10 @@ const Form = () => {
                 type = "submit"
                 value = "Enviar"
             />
+
+            {
+                showAlert && <Alert message = {showAlert} error = {error} />
+            }
         
         </FormCWrapper>
     )

@@ -1,6 +1,8 @@
 
 import { google } from 'googleapis';
 
+import key from '../../../apikey.json'
+
 import { NextApiRequest, NextApiResponse } from 'next';
 
 const save = async ( req:NextApiRequest, res:NextApiResponse ) => {
@@ -10,8 +12,8 @@ const save = async ( req:NextApiRequest, res:NextApiResponse ) => {
     // Auth for google apis
     const auth = new google.auth.GoogleAuth({
         credentials: {
-            client_email: process.env.GOOGLE_SHEET_ID,
-            private_key: process.env.GOOGLE_PRIVATE_KEY
+            client_email: process.env.GOOGLE_CLIENT_MAIL,
+            private_key: process.env.GOOGLE_PRIVATE_KEY?.replace(/\\n/g, '\n')
         },
         scopes: [
             'https://www.googleapis.com/auth/drive',
@@ -27,8 +29,10 @@ const save = async ( req:NextApiRequest, res:NextApiResponse ) => {
     });
 
 
+
+
     const params = {
-        spreadsheetId: process.env.GOOGLE_SHEET_ID,
+        spreadsheetId:  process.env.GOOGLE_SHEET_ID,
         range: 'A1:B1',
         valueInputOption: 'USER_ENTERED',
         insertDataOption: 'INSERT_ROWS',

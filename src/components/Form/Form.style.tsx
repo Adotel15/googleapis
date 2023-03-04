@@ -5,18 +5,21 @@ const FormCWrapper = styled.form`
 
     background-color: #ebfffd;
 
+    position: relative;
+
     box-shadow: 0px 0px 100px 2px rgba(255,255,255,0.79);
     -webkit-box-shadow: 0px 0px 100px 2px rgba(255,255,255,0.79);
     -moz-box-shadow: 0px 0px 100px 2px rgba(255,255,255,0.79);
 
     width: 40%;
-    height: 60%;
+    height: 50%;
     border-radius: 40px;
 
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    gap: 20px;
 
     @media (max-width: 769px) {
         width: 90%;
@@ -47,8 +50,6 @@ const InputWrapper = styled.div`
         font-size: 18px;
         font-weight: 700;
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-
-        
 
         &:focus {
             outline: none;
